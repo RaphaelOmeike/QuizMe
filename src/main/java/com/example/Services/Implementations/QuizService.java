@@ -4,6 +4,7 @@ import java.awt.desktop.QuitResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Services.Interfaces.IPlayerAttemptService;
 import com.example.Utilities.ConsoleColour;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,12 @@ public class QuizService implements IQuizService {
 
     private final IQuizRepository _quizRepository;
     private final IQuestionService _questionService;
+    private final IPlayerAttemptService _playerAttemptService;
 
-    public QuizService(IQuizRepository quizRepository, IQuestionService questionService) {
+    public QuizService(IQuizRepository quizRepository, IQuestionService questionService, IPlayerAttemptService playerAttemptService) {
         _quizRepository = quizRepository;
         _questionService = questionService;
+        _playerAttemptService = playerAttemptService;
     }
 
     @Override
@@ -48,16 +51,15 @@ public class QuizService implements IQuizService {
         }
         return new QuizResponse(quiz.Id, quiz.Name, quiz.TotalMarks, quiz.PlayerId);
     }
-    
+
     @Override
     public void LoadQuizQuestions(int quizId, String questionFileName) {
-        //DeleteQuizQuestions(quizId); //very wicked deletion
-        if (!_questionService.GetAllQuestionsForQuiz(quizId).isEmpty()) {
-            ConsoleColour.printFailure("Quiz Questions already loaded!!");
+        if (_playerAttemptService.CheckPlayerAttemptExistsForQuiz(quizId)) {
+            ConsoleColour.printFailure("Quiz Questions already used in a QUIZ ME!!");
             return;
         }
         Quiz quiz = _quizRepository.GetById(quizId);
-        //_quizRepository.Create(quiz);
+        DeleteQuizQuestions(quizId); //very wicked deletion
         questionFileName += ".txt";
         var loadQuestions = _questionService.ReadQuestionsFromFile(questionFileName, quiz.Id);
         if (loadQuestions != null) {

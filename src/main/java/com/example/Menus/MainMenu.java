@@ -24,7 +24,7 @@ public class MainMenu {
 
             int userChoice = AppUtilities.getValidatedIntegerInput("Enter choice: ");
             if (userChoice == 0) {
-                ConsoleColour.printFailure("Hoops, quit!!!!");
+                ConsoleColour.printFailure("Oops, quit!!!!");
                 break;
             }
             HandleInputs(userChoice);

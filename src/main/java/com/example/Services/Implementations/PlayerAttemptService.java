@@ -56,7 +56,17 @@ public class PlayerAttemptService implements IPlayerAttemptService {
         playerAttempt.MarksObtained =  marksObtained;
     }
 
-//    @Override
+    @Override
+    public boolean CheckPlayerAttemptExistsForQuiz(int quizId) {
+        var playerAttempts = _playerAttemptRepository.GetAll();
+        for (PlayerAttempt playerAttempt : playerAttempts) {
+            if (playerAttempt.QuizId == quizId)
+                return true;
+        }
+        return false;
+    }
+
+    //    @Override
 //    public int StartQuiz(PlayerAttemptRequest request) {
 //
 //        return 0;

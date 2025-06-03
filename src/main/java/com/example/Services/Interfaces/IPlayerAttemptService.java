@@ -7,6 +7,7 @@ public interface IPlayerAttemptService {
     int CreatePlayerAttempt(PlayerAttemptRequest request);
     PlayerAttemptResponse GetPlayerAttemptById(int playerAttemptId);
     void UpdateMarksObtained(int playerAttemptId, float marksObtained);
+    boolean CheckPlayerAttemptExistsForQuiz(int quizId);
 //    int StartQuiz(PlayerAttemptRequest request);
     PlayerAttemptResponse MarkQuiz(int playerAttemptId);
 
